@@ -51,10 +51,11 @@ plus a total count line — demonstrating the power of multi-GNSS receivers.
 
 ```
 project3-multi-constellation/
-├── project3_multi_constellation.ipynb   ← Main notebook (run this)
-├── requirements.txt                      ← Python dependencies
-├── LICENSE                               ← MIT License
-└── README.md                             ← This file
+├── Outputs/
+    ├── project3_multi_constellation.ipynb   ← Main notebook (run this)
+    ├── requirements.txt                      ← Python dependencies
+    ├── LICENSE                               ← MIT License
+    └── README.md                             ← This file
 ```
 
 ---
