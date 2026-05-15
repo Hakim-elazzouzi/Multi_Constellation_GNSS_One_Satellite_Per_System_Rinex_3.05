@@ -1,10 +1,10 @@
-# 🌍 Project 3 — Multi-Constellation GNSS: One Satellite per System
+# Project 3 — Multi-Constellation GNSS: One Satellite per System
 
 > **GPS · GLONASS · Galileo · BeiDou · QZSS | Pseudorange & SNR Comparison | 24-Hour | Auckland, NZ**
 
 ---
 
-## 📌 Overview
+## Overview
 
 While Projects 1 and 2 focused exclusively on GPS, this project opens up the full **multi-GNSS picture**.
 
@@ -20,7 +20,7 @@ Modern receivers track five satellite constellations simultaneously. This projec
 
 ---
 
-## 🖼️ Output Plots
+## Output Plots
 
 ### Plot 1 — Multi-Constellation Pseudorange Arcs
 
@@ -47,7 +47,7 @@ plus a total count line — demonstrating the power of multi-GNSS receivers.
 
 ---
 
-## 📂 File Structure
+## File Structure
 
 ```
 project3-multi-constellation/
@@ -64,7 +64,7 @@ project3-multi-constellation/
 
 ---
 
-## ⚙️ How to Run
+## How to Run
 
 ### 1. Install dependencies
 
@@ -90,7 +90,7 @@ The notebook **automatically selects the best satellite per constellation** — 
 
 ---
 
-## 🛠️ Dependencies
+## Dependencies
 
 | Package | Purpose |
 |---------|---------|
@@ -102,7 +102,7 @@ The notebook **automatically selects the best satellite per constellation** — 
 
 ---
 
-## 🧭 Observables Used
+## Observables Used
 
 | Constellation | Pseudorange | SNR |
 |--------------|-------------|-----|
@@ -116,7 +116,7 @@ The notebook auto-detects the best available code for each satellite.
 
 ---
 
-## 💡 Technical Note — SNR Heatmap Fix
+## Technical Note — SNR Heatmap Fix
 
 This project uses `imshow` (not `pcolormesh`) for all heatmaps.  
 `pcolormesh` with `shading='auto'` silently drops data on matrices with few rows,  
@@ -125,7 +125,7 @@ correctly for any matrix size including single-row cases.
 
 ---
 
-## 👤 Author
+## Author
 
 **Hakim El Azzouzi**  
 MSc Global Navigation Satellite Systems  
@@ -136,13 +136,13 @@ Mohammed First University, Oujda, Morocco
 
 ---
 
-## 📜 License
+## License
 
 MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## 🔗 Part of the GNSS RINEX Analysis Series
+## Part of the GNSS RINEX Analysis Series
 
 | # | Project |
 |---|---------|
