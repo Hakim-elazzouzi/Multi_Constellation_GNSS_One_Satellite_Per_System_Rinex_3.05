@@ -1,12 +1,6 @@
 =============================================================================
-🛰️ Project 3 — Multi-Constellation GNSS: One Satellite per System
+Project 3 — Multi-Constellation GNSS: One Satellite per System
 =============================================================================
- Author   : Hakim El Azzouzi
- Degree   : MSc Global Navigation Satellite Systems
-            Mohammed First University, Oujda, Morocco
- Email    : elazzouzihakim10@gmail.com
- LinkedIn : https://linkedin.com/in/Hakim-El-Azzouzi
- Location : Luxembourg 🇱🇺
 -----------------------------------------------------------------------------
  Station  : AUCK00NZL  —  Auckland, New Zealand  (GeoNet / LINZ Network)
  File     : AUCK00NZL_R_20260010000_01D_30S_MO.rnx
@@ -20,7 +14,7 @@
 Modern GNSS receivers track **five satellite constellations simultaneously**.
 This project picks **one representative satellite from each system** and compares them side by side:
 
-## 📡 Why Do Pseudoranges Differ Between Systems?
+## Why Do Pseudoranges Differ Between Systems?
 
 Each constellation uses a different orbital altitude, so the **geometric distance**
 (and therefore the pseudorange magnitude) differs:
@@ -75,7 +69,7 @@ print(f'   xarray version   : {xr.__version__}')
 # RINEX FILE PATH HERE
 obs_path = "/AUCK00NZL_R_20260010000_01D_30S_MO.rnx"  # ← change this path
 # Read the file header first (fast — no data loaded yet)
-print("📋 FILE HEADER")
+print("FILE HEADER")
 print("=" * 60)
 header = gr.rinexheader(obs_path)
 
@@ -86,7 +80,7 @@ print()
 
 # Load all observation data (interval=30 means keep 30-sec rate)
 
-print("⏳ Loading observation data (this may take 1–2 minutes)...")
+print("Loading observation data (this may take 1–2 minutes)...")
 obs = gr.load(obs_path, interval=30)
 print()
 print("✅ Data loaded!")
@@ -117,7 +111,7 @@ for prefix in ['G', 'R', 'E', 'C', 'J']:
 # and find its best pseudorange and SNR observable code
 selected = {}   # will hold: prefix → {sat, pr_code, snr_code, pr_data, snr_data}
 
-print("🛰️  Selecting best satellite per constellation:")
+print("Selecting best satellite per constellation:")
 print()
 print(f"{'System':<12} {'Satellite':<10} {'PR Code':<8} {'SNR Code':<9} {'Valid Epochs':>12} {'Mean SNR':>10}")
 print("-" * 65)
@@ -233,7 +227,7 @@ plt.show()
 
 print('✅ Plot saved: plot1_multi_constellation_pseudorange.png')
 print()
-print('💡 Interpretation:')
+print('Interpretation:')
 print('   • Each arc = satellite rising, passing overhead, then setting')
 print('   • Higher orbital altitude  → larger pseudorange (e.g. Galileo > GPS)')
 print('   • Lower orbital altitude   → smaller pseudorange (e.g. GLONASS < GPS)')
@@ -356,7 +350,7 @@ plt.show()
 
 print('✅ Plot saved: plot2_multi_constellation_snr_heatmap.png')
 print()
-print('💡 Interpretation:')
+print('Interpretation:')
 print('   • Each ROW = one constellation (GPS, GLONASS, Galileo, BeiDou, QZSS)')
 print('   • Black = satellite not visible from Auckland at that time')
 print('   • Green/Yellow = strong signal — good tracking conditions')
@@ -486,7 +480,7 @@ plt.show()
 
 print('✅ Plot saved: plot3_constellation_availability.png')
 print()
-print('💡 Interpretation:')
+print('Interpretation:')
 print(f'   • GPS alone: ~{avail["G"].mean():.0f} sats average  →  good, but limited in challenging environments')
 print(f'   • All systems: ~{total_per_epoch.mean():.0f} sats average  →  much stronger geometry and reliability')
 print('   • More satellites = better DOP (Dilution of Precision) = more accurate position')
@@ -496,7 +490,7 @@ print('   • Multi-GNSS is why modern phones and professional receivers are so 
 # Step 7 — Numerical Summary per Constellation
 # ─────────────────────────────────────────────
 # Print a clean comparison table
-print("📊 MULTI-CONSTELLATION SUMMARY")
+print("MULTI-CONSTELLATION SUMMARY")
 print("=" * 80)
 print(f"{'System':<10} {'Satellite':<10} {'PR [Mm] min–max':<22} {'SNR mean':>10} {'Visible %':>10}")
 print("-" * 80)
