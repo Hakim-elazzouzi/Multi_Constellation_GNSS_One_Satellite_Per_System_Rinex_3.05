@@ -25,16 +25,6 @@ def group_satellites(obs):
         
     return constellations
 
-def select_best_satellite(obs, const_config, sats):
-    """
-    Selects best satellite per constellation based on:
-    - maximum valid pseudorange epochs
-    - fallback SNR availability
-
-    Returns structured dictionary for plotting + analysis.
-    """
-   import numpy as np
-
 def select_best_satellites(constellations, CONST_CONFIG, obs):
     """
     Selects the satellite with the most valid epochs for each constellation.
