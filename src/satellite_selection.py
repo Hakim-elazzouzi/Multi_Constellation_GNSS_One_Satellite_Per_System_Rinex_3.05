@@ -7,23 +7,23 @@ best representative satellite based on observation availability.
 
 import numpy as np
 
-CONSTELLATIONS = ['G', 'R', 'E', 'C', 'J']
-
-
 def group_satellites(obs):
     """
     Groups satellites by constellation prefix.
-
-    Returns:
-        dict: { 'G': [G01, G02, ...], ... }
+    Returns: dict: { 'g': [g01, g02, ...], ... }
     """
     all_sv = obs.sv.values
-    return {
-        p: sorted([s for s in all_sv if s.startswith(p)])
-        for p in CONSTELLATIONS
-        if any(s.startswith(p) for s in all_sv)
-    }
-
+    constellations = {}
+    
+    # Extract unique first letters from all satellite names
+    prefixes = sorted(list(set(s[0] for s in all_sv if s)))
+    
+    for prefix in prefixes:
+        # Gather and sort all satellites matching this prefix
+        sats = sorted([s for s in all_sv if s.startswith(prefix)])
+        constellations[prefix] = sats
+        
+    return constellations
 
 def select_best_satellite(obs, const_config, sats):
     """
@@ -33,51 +33,60 @@ def select_best_satellite(obs, const_config, sats):
 
     Returns structured dictionary for plotting + analysis.
     """
-    selected = {}
+   import numpy as np
 
-    for prefix, sat_list in sats.items():
-        cfg = const_config[prefix]
+def select_best_satellites(constellations, CONST_CONFIG, obs):
+    """
+    Selects the satellite with the most valid epochs for each constellation.
+    
+    Returns:
+        dict: The 'selected' dictionary containing the best satellite data per prefix.
+    """
+    selected = {}   # will hold: prefix → {sat, pr_code, snr_code, pr_data, snr_data}
 
-        best = {
-            "sat": None,
-            "count": 0,
-            "pr_code": None,
-            "snr_code": None,
-            "pr": None,
-            "snr": None,
-        }
+    for prefix, sats in constellations.items():
+        cfg = CONST_CONFIG[prefix]
+        best_sat = None
+        best_pr_code = None
+        best_snr_code = None
+        best_count = 0
+        best_pr = None
+        best_snr = None
 
-        for sat in sat_list:
-            for pr_code in cfg["pr_codes"]:
+        for sat in sats:
+            # Try each pseudorange code
+            for pr_code in cfg['pr_codes']:
                 if pr_code not in obs.data_vars:
                     continue
-
                 pr = obs[pr_code].sel(sv=sat).to_series().dropna()
-
-                if len(pr) > best["count"]:
-                    snr_series = None
+                if len(pr) > best_count:
+                    # Also find SNR
+                    snr = None
                     snr_code_used = None
-
-                    for snr_code in cfg["snr_codes"]:
+                    for snr_code in cfg['snr_codes']:
                         if snr_code in obs.data_vars:
                             s = obs[snr_code].sel(sv=sat).to_series().dropna()
                             if len(s) > 0:
-                                snr_series = s
+                                snr = s
                                 snr_code_used = snr_code
                                 break
+                    best_count = len(pr)
+                    best_sat = sat
+                    best_pr_code = pr_code
+                    best_snr_code = snr_code_used
+                    best_pr = pr
+                    best_snr = snr
+                break  # use first working code
 
-                    best.update({
-                        "sat": sat,
-                        "count": len(pr),
-                        "pr_code": pr_code,
-                        "snr_code": snr_code_used,
-                        "pr": pr,
-                        "snr": snr_series,
-                    })
-
-                break
-
-        if best["sat"]:
-            selected[prefix] = best
+        if best_sat:
+            selected[prefix] = {
+                'sat': best_sat,
+                'pr_code': best_pr_code,
+                'snr_code': best_snr_code,
+                'pr': best_pr,
+                'snr': best_snr,
+                'color': cfg['color'],
+                'name': cfg['name'],
+            }
 
     return selected
