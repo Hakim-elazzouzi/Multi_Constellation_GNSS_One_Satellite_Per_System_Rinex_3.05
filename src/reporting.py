@@ -1,11 +1,7 @@
-# src/reporting.py
-
 import numpy as np
 
 
-# ─────────────────────────────────────────────────────────────
 # Satellite selection report
-# ─────────────────────────────────────────────────────────────
 
 def print_constellation_selection_table(selected):
     """
@@ -37,9 +33,7 @@ def print_constellation_selection_table(selected):
               f"{str(snr_code):<9} {valid_epochs:>12} {snr_str:>12}")
 
 
-# ─────────────────────────────────────────────────────────────
 # Availability summary
-# ─────────────────────────────────────────────────────────────
 
 def print_constellation_summary(obs, selected, total_per_epoch, const_names):
     """
@@ -91,9 +85,7 @@ def print_constellation_summary(obs, selected, total_per_epoch, const_names):
         )
 
 
-# ─────────────────────────────────────────────────────────────
 # Availability stats helper (optional reuse)
-# ─────────────────────────────────────────────────────────────
 
 def print_availability_stats(total_per_epoch, avail):
     """
