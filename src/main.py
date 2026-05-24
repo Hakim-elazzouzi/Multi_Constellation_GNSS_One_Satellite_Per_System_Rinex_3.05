@@ -2,7 +2,14 @@ import georinex as gr
 import numpy as np
 import pandas as pd
 
-from satellite_selection import select_best_constellations
+from config import CONST_CONFIG
+
+from satellite_selection import (
+    group_satellites,
+    select_best_satellites,
+    compute_availability
+)
+
 from visualization import (
     plot_multi_constellation_pseudorange,
     plot_multi_constellation_heatmap,
@@ -14,15 +21,11 @@ from reporting import (
     print_constellation_summary,
     print_availability_stats
 )
-
-from config import CONST_CONFIG
-
-
 # Main pipeline
 
 def main():
 
-    # Load RINEX
+    # Step 1 — Load RINEX
     obs_path = "/AUCK00NZL_R_20260010000_01D_30S_MO.rnx"
 
     print("FILE HEADER")
@@ -32,14 +35,30 @@ def main():
     for k, v in header.items():
         print(f"{k:<25}: {v}")
 
-    print("\nLoading observation data...")
+    print("\nLoading observation data (this may take 1–2 minutes)...")
     obs = gr.load(obs_path, interval=30)
     print("Data loaded successfully\n")
 
-    # Satellite selection
-    selected, avail, total_per_epoch = select_best_constellations(obs)
+    # Step 2 — Satellite grouping
+    constellations = group_satellites(obs)
 
-    # Reporting (ALL prints centralized here)
+    # Step 3 — Select best satellite per system
+    selected = select_best_satellites(
+        constellations,
+        CONST_CONFIG,
+        obs
+    )
+
+    # Choose pseudorange for availability analysis (standard GPS)
+    pr_code = "C1C" if "C1C" in obs.data_vars else "C1X"
+
+    avail, total_per_epoch = compute_availability(
+        obs,
+        pr_code,
+        constellations
+    )
+
+    # Step 4 — Reporting (ALL prints centralized)
     print_constellation_selection_table(selected)
 
     print_availability_stats(total_per_epoch, avail)
@@ -51,7 +70,7 @@ def main():
         CONST_CONFIG
     )
 
-    # Visualization
+    # Step 5 — Visualizations
     plot_multi_constellation_pseudorange(selected)
 
     plot_multi_constellation_heatmap(obs, selected)
@@ -60,6 +79,9 @@ def main():
 
 
 # Entry point
+
+if __name__ == "__main__":
+    main()
 
 if __name__ == "__main__":
     main()
